@@ -1,3 +1,8 @@
-import '@/scss/index.scss'
+import "@/scss/index.scss";
+import { Excel, Formula, Header, Table, Toolbar } from "@/components";
 
-console.log('Hello!')
+const excel = new Excel("#app", {
+  components: [Header, Toolbar, Formula, Table],
+});
+
+excel.render();
