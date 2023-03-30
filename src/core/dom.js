@@ -34,8 +34,12 @@ class Dom {
     return this;
   }
 
-  on() {
-    return this;
+  on(eventType, callback) {
+    this.$el.addEventListener(eventType, callback);
+  }
+
+  off(eventType, instanceCallback) {
+    this.$el.removeEventListener(eventType, instanceCallback);
   }
 }
 
