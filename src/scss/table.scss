@@ -46,6 +46,11 @@
     position: relative;
   }
 
+  .column,
+  .row-info {
+    user-select: none;
+  }
+
   .cell {
     min-width: 40px;
     padding: 5px;
@@ -72,10 +77,15 @@
     right: 0;
     background: $primary-color;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
 
-    &:hover {
+    &:hover,
+    &:active {
       opacity: 1;
+    }
+
+    &:active {
+      z-index: 1000;
     }
   }
 
@@ -83,11 +93,19 @@
     width: 4px;
     top: 0;
     cursor: col-resize;
+
+    &:active {
+      bottom: -100vh;
+    }
   }
 
   .row-resize {
     height: 4px;
     left: 0;
     cursor: row-resize;
+
+    &:active {
+      right: -100vw;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { ExcelComponent } from "@/core/ExcelComponent";
 import { createTable } from "@/components/table/table.template";
+import { resizeHandler } from "@/components/table/table.resize";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
@@ -7,7 +8,7 @@ export class Table extends ExcelComponent {
   constructor($root) {
     super($root, {
       name: "table",
-      listeners: ["click", "mousedown", "mousemove", "mouseup"],
+      listeners: ["mousedown"],
     });
   }
 
@@ -15,19 +16,10 @@ export class Table extends ExcelComponent {
     return createTable(20);
   }
 
-  onClick() {
-    console.log("click");
-  }
-
-  onMousedown() {
-    console.log("mousedown");
-  }
-
-  onMousemove() {
-    console.log("mousemove");
-  }
-
-  onMouseup() {
-    console.log("mouseup");
+  onMousedown(event) {
+    const resizeType = event.target.dataset.resize;
+    if (resizeType) {
+      resizeHandler(this.$root, event, resizeType);
+    }
   }
 }
