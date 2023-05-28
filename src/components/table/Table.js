@@ -3,15 +3,16 @@ import { ExcelComponent } from "@/core/ExcelComponent";
 import { createTable } from "@/components/table/table.template";
 import { resizeHandler } from "@/components/table/table.resize";
 import { TableSelection } from "@/components/table/TableSelection";
-import { matrix } from "@/components/table/table.functions";
+import { matrix, nextSelector } from "@/components/table/table.functions";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
-      name: "table",
-      listeners: ["mousedown"],
+      name: "Table",
+      listeners: ["mousedown", "keydown"],
+      ...options,
     });
   }
 
@@ -30,6 +31,11 @@ export class Table extends ExcelComponent {
 
     const $cell = this.$root.find('[data-id="0:0"]');
     this.selection.select($cell);
+
+    this.emitter.subscribe("formula:change", (text) => {
+      console.log("Formula text:", text);
+      this.selection.current.text(text);
+    });
   }
 
   onMousedown(event) {
@@ -48,6 +54,26 @@ export class Table extends ExcelComponent {
       } else {
         this.selection.select($target);
       }
+    }
+  }
+
+  onKeydown(event) {
+    const keys = [
+      "Enter",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowDown",
+      "ArrowUp",
+    ];
+    const { key } = event;
+
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault();
+      console.log("Gotcha!", key);
+      const id = this.selection.current.id(true);
+      const $next = this.$root.find(nextSelector(key, id));
+      this.selection.select($next);
     }
   }
 }

@@ -70,6 +70,15 @@ class Dom {
     return ids;
   }
 
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
+  text(text) {
+    this.$el.textContent = text;
+  }
+
   addClass(className) {
     this.$el.classList.add(className);
   }
