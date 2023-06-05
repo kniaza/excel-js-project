@@ -46,10 +46,53 @@ class Dom {
     return this.$el.querySelectorAll(selector);
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector));
+  }
+
   css(styles = {}) {
     Object.keys(styles).forEach((key) => {
       this.$el.style[key] = styles[key];
     });
+  }
+
+  id(parse) {
+    const ids = this.data.id;
+
+    if (parse) {
+      const [row, col] = ids.split(":");
+      return {
+        row: +row,
+        col: +col,
+      };
+    }
+
+    return ids;
+  }
+
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
+  text(text) {
+    if (typeof text === "string") {
+      this.$el.textContent = text;
+      return this;
+    }
+    if (this.$el.tagName.toLowerCase() === "input") {
+      return this.$el.value.trim();
+    }
+
+    return this.$el.textContent.trim();
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className);
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className);
   }
 
   get data() {

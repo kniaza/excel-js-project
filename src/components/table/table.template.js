@@ -3,9 +3,16 @@ const CODES = {
   Z: 90,
 };
 
-const createCell = (content, index) => {
+const createCell = (rowIndex, colIndex) => {
   return `
-    <div class="cell" contenteditable data-col="${index}">${content}</div>
+    <div 
+      class="cell" 
+      contenteditable 
+      data-col="${colIndex}" 
+      data-row="${rowIndex}"
+      data-type="cell"
+      data-id="${rowIndex}:${colIndex}"
+    ></div>
   `;
 };
 
@@ -50,9 +57,12 @@ export const createTable = (rowsCount = 15) => {
   rows.push(createRow(columns));
 
   // generate cells for table
-  for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill("").map(createCell).join("");
-    rows.push(createRow(cells, i + 1));
+  for (let rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
+    const cells = new Array(colsCount)
+      .fill("")
+      .map((_, colIndex) => createCell(rowIndex, colIndex))
+      .join("");
+    rows.push(createRow(cells, rowIndex + 1));
   }
 
   return rows.join("");
